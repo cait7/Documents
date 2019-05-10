@@ -1,4 +1,4 @@
-## Documents
+# Documents
 
 Document Repository for Earn Me The Money Project
 
