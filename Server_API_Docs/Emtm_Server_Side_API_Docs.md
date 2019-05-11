@@ -479,7 +479,7 @@
 
    * 请求参数：
 
-     ```json
+     ```js
      {
          "username" : 当前大学生用户昵称[string],
          "withdraw_amount" : 提现金额[int] // 以闲钱币作为提现单位
