@@ -152,7 +152,7 @@
          "phone" : 大学生用户手机号[string],
          "hobbies" : [大学生兴趣爱好][array],
          // 下面是大学生身份认证所需信息
-        	"school" : 大学生所在学校[string],
+         "school" : 大学生所在学校[string],
          "student_id" : 大学生学号[int],
          "real_name" : 大学生真实姓名[string]
      }
