@@ -82,7 +82,7 @@
              "credit_score" : 目标学生的信誉积分下限[int]
          }[js-object],
          "task_pay" : 任务薪酬[int],
-         "task_time_limit" : 任务最重deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string]
+         "task_time_limit" : 任务最终deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string]
      }
      ```
 
@@ -109,6 +109,7 @@
      ```js
      {
          "username" : 奶牛用户昵称[string],
+         "check_mode" : 0, // 奶牛查看任务模式，须与大学生查看任务区分开
          "task_name" : 目标任务的名称[string]
      }
      ```
@@ -125,6 +126,7 @@
              "student_name_1" : boolean, // 0 for not finished, 1 for finished
              ...
          }[js-object]
+         // 目前还在考虑如何支持奶牛查看大学生任务完成的结果
      }
      ```
 
@@ -203,14 +205,21 @@
 
    * 请求参数：
 
-     ```
-
+     ```js
+     {
+         "username" : 创建群聊的大学生昵称，作为群主[string],
+         "group_name" : 群聊名称[string],
+         "max_limit" : 群聊人数上限[int]
+     }
      ```
 
    * 返回格式：
 
-     ```
-
+     ```js
+     {
+         "code" : boolean, // 0 for failure, 1 for success
+         "errMessage" : string
+     }
      ```
 
      ​
@@ -221,14 +230,20 @@
 
    * 请求参数：
 
-     ```
-
+     ```js
+     {
+         "username" : 加入群聊的大学生昵称[string],
+         "group_name" : 目标群聊的名称[string]
+     }
      ```
 
    * 返回格式：
 
-     ```
-
+     ```js
+     {
+         "code" : boolean, // 0 for failure, 1 for success
+         "errMessage" : string
+     }
      ```
 
      ​
@@ -239,14 +254,20 @@
 
    * 请求参数：
 
-     ```
-
+     ```js
+     {
+         "uername" : 当前大学生用户的昵称[string],
+         "friend_name" : 目标大学生好友昵称[string]
+     }
      ```
 
    * 返回格式：
 
-     ```
-
+     ```js
+     {
+         "code" : boolean, // 0 for failure, 1 for success
+         "errMessage" : string
+     }
      ```
 
 
@@ -260,18 +281,53 @@
 
    * 请求参数：
 
-     ```
-
+     ```js
+     {
+         "username" : 当前大学生用户昵称[string],
+         "receive_mode" : 0, // 接收奶牛发布的任务，须与接收大学生私人任务区分
+         "target_username" : 发布任务的目标奶牛用户昵称[string],
+         "target_task" : 目标任务名称[string]
+     }
      ```
 
    * 返回格式：
 
+     ```js
+     {
+         "code" : boolean, // 0 for failure, 1 for success
+         "errMessage" : string
+     }
      ```
 
+
+
+
+
+2. 提交任务功能
+
+   * 接口地址：服务器地址/submit_task
+
+   * 请求参数：
+
+     ```js
+     {
+         "username" : 当前大学生用户名称,
+         "cow_username" : 发布任务的目标奶牛用户昵称[string],
+         "target_task" : 目标任务名称[string],
+         // 目前还在考虑大学生用户以何种形式提交任务结果
+     }
+     ```
+
+   * 返回格式：
+
+     ```js
+     {
+         "code" : boolean, // 0 for failure, 1 for success
+         "errMessage" : string
+     }
      ```
 
      ​
-
 
 > 发布私人任务部分
 
@@ -281,14 +337,55 @@
 
    * 请求参数：
 
-     ```
-
+     ```js
+     {
+         "username" : 奶牛用户昵称[string],
+         "release_mode" : 1, // 私人任务发布模式与奶牛任务区分开
+         "task_name" : 任务名称[string],
+         "task_content" : 私人任务要求[string],
+         "task_pay" : 任务薪酬[int],
+         "task_time_limit" : 任务最终deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string]
+     }
      ```
 
    * 返回格式：
 
+     ```js
+     {
+         "code" : boolean, // 0 for failure, 1 for success
+         "errMessage" : string
+     }
      ```
 
+     ​
+
+2. 查看自己发布的私人任务状态
+
+   * 接口地址：服务器地址/check_task
+
+   * 请求参数：
+
+     ```js
+     {
+         "username" : 大学生用户昵称[string],
+         "check_mode" : 1, // 大学生查看任务模式，须与奶牛查看任务区分开
+         "task_name" : 目标任务的名称[string]
+     }
+     ```
+
+   * 返回格式：
+
+     ```js
+     {
+         "code" : boolean, // 0 for failure, 1 for success
+         "errMessage" : string,
+         // 当code为0时，task_status字段为空对象
+         "task_status" : {
+             // 存储所有已接受任务的学生昵称，与完成与否信息
+             "student_name_1" : boolean, // 0 for not finished, 1 for finished
+             ...
+         }[js-object]
+     }
      ```
 
      ​
@@ -298,18 +395,26 @@
 
 1. 接受私人任务功能
 
-   * 接口地址：服务器地址/receive_tasl
+   * 接口地址：服务器地址/receive_task
 
    * 请求参数：
 
-     ```
-
+     ```js
+     {
+         "username" : 当前大学生用户昵称[string],
+         "receive_mode" : 1, // 接收私人发布的任务，须与接受奶牛任务区分
+         "target_username" : 发布任务的目标大学生用户昵称[string],
+         "target_task" : 目标任务名称[string]
+     }
      ```
 
    * 返回格式：
 
-     ```
-
+     ```js
+     {
+         "code" : boolean, // 0 for failure, 1 for success
+         "errMessage" : string
+     }
      ```
 
      ​
@@ -323,14 +428,20 @@
 
    * 请求参数：
 
-     ```
-
+     ```js
+     {
+         "username" : 当前大学生用户昵称[string]
+     }
      ```
 
    * 返回格式：
 
-     ```
-
+     ```js
+     {
+         "code" : boolean, // 0 for failure, 1 for success
+         "errMessage" : string,
+         "credit_score" : int
+     }
      ```
 
      ​
@@ -344,14 +455,20 @@
 
    * 请求参数：
 
-     ```
-
+     ```js
+     {
+         "username" : 当前大学生用户昵称[string],
+         "recharge_amount" : 充值金额[int] // 以闲钱币作为充值单位
+     }
      ```
 
    * 返回格式：
 
-     ```
-
+     ```js
+     {
+         "code" : boolean, // 0 for failure, 1 for success
+         "errMessage" : string
+     }
      ```
 
      ​
@@ -362,14 +479,20 @@
 
    * 请求参数：
 
-     ```
-
+     ```json
+     {
+         "username" : 当前大学生用户昵称[string],
+         "withdraw_amount" : 提现金额[int] // 以闲钱币作为提现单位
+     }
      ```
 
    * 返回格式：
 
-     ```
-
+     ```js
+     {
+         "code" : boolean, // 0 for failure, 1 for success
+         "errMessage" : string
+     }
      ```
 
      ​
