@@ -303,7 +303,7 @@
 
 
 
-2. 提交任务功能
+2. 提交奶牛任务功能
 
    * 接口地址：服务器地址/submit_task
 
@@ -312,7 +312,8 @@
      ```js
      {
          "username" : 当前大学生用户名称,
-         "cow_username" : 发布任务的目标奶牛用户昵称[string],
+         "submit_mode" : 0, // 提交奶牛发起的任务应与提交私人任务分开
+         "target_username" : 发布任务的目标用户昵称[string],
          "target_task" : 目标任务名称[string],
          // 目前还在考虑大学生用户以何种形式提交任务结果
      }
@@ -418,6 +419,33 @@
      ```
 
      ​
+
+2. 提交私人任务功能
+
+   * 接口地址：服务器地址/submit_task
+
+   * 请求参数：
+
+      ```js
+      {
+          "username" : 当前大学生用户名称,
+          "submit_mode" : 1, // 提交私人任务应与提交奶牛任务分开
+          "target_username" : 发布任务的目标用户昵称[string],
+          "target_task" : 目标任务名称[string],
+          // 目前还在考虑大学生用户以何种形式提交任务结果
+      }
+      ```
+
+   * 返回格式：
+
+      ```js
+      {
+          "code" : boolean, // 0 for failure, 1 for success
+          "errMessage" : string
+      }
+      ```
+
+   ​
 
 
 > 信誉积分部分
