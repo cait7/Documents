@@ -12,7 +12,7 @@
 
    * 请求参数：
 
-     ```json
+     ```js
      {
          "username" : 奶牛用户昵称[string],
          "wechat_ok" : 是否通过微信账号认证[boolean] // 0 for failure, 1 for success
@@ -25,7 +25,7 @@
 
    * 返回格式：
 
-     ```json
+     ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
          "errMessage" : string
@@ -40,7 +40,7 @@
 
    * 请求参数：
 
-     ```json
+     ```js
      {
          "username" : 奶牛用户昵称[string],
          "login_mode" : 0, // 奶牛用户登录模式与大学生须区分开
@@ -50,7 +50,7 @@
 
    * 返回格式：
 
-     ```json
+     ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
          "errMessage" : string
@@ -68,7 +68,7 @@
 
    * 请求参数：
 
-     ```json
+     ```js
      {
          "username" : 奶牛用户昵称[string],
          "release_mode" : 0, // 奶牛用户发布任务模式与大学生区分开
@@ -80,7 +80,7 @@
              "major" : 目标学生专业[string],
              "task_experience" : 目标学生任务经验下限[int], // 此处以学生历史完成的任务数来衡量
              "credit_score" : 目标学生的信誉积分下限[int]
-         }[json-object],
+         }[js-object],
          "task_pay" : 任务薪酬[int],
          "task_time_limit" : 任务最重deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string]
      }
@@ -88,7 +88,7 @@
 
    * 返回格式：
 
-     ```json
+     ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
          "errMessage" : string
@@ -106,7 +106,7 @@
 
    * 请求参数：
 
-     ```json
+     ```js
      {
          "username" : 奶牛用户昵称[string],
          "task_name" : 目标任务的名称[string]
@@ -115,7 +115,7 @@
 
    * 返回格式：
 
-     ```json
+     ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
          "errMessage" : string,
@@ -124,7 +124,7 @@
              // 存储所有已接受任务的学生昵称，与完成与否信息
              "student_name_1" : boolean, // 0 for not finished, 1 for finished
              ...
-         }[json-object]
+         }[js-object]
      }
      ```
 
@@ -141,7 +141,7 @@
 
    * 请求参数：
 
-     ```json
+     ```js
      {
          "username" : 大学生用户昵称[string],
          "wechat_ok" : 是否通过微信账号认证[boolean] // 0 for failure, 1 for success
@@ -158,7 +158,7 @@
 
    * 返回格式：
 
-     ```json
+     ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
          "errMessage" : string
@@ -175,7 +175,7 @@
 
    * 请求参数：
 
-     ```json
+     ```js
      {
          "username" : 大学生用户昵称[string],
          "login_mode" : 1, // 大学生用户登录模式与奶牛须区分开
@@ -185,7 +185,7 @@
 
    * 返回格式：
 
-     ```json
+     ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
          "errMessage" : string
