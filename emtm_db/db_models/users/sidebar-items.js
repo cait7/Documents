@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Cow",""],["NewCow",""],["NewStudent",""],["NewUser",""],["Student",""],["User",""]]});

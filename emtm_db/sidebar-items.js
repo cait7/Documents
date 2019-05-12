@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["controller",""],["db_models",""],["models",""],["schema",""]]});
