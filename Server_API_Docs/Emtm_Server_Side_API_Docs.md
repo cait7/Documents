@@ -4,7 +4,7 @@
 
 ### 请求方式：POST
 
-#### 请求参数格式："Content-Type:application/json"
+### 请求参数格式："Content-Type:application/json"
 
 
 
