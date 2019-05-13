@@ -2,7 +2,13 @@
 
 
 
-## Part One. 奶牛 APIs (均需要采用Post请求方式)
+### 请求方式：POST
+
+#### 请求参数格式："Content-Type:application/json"
+
+
+
+## Part One. 奶牛 APIs
 
 > 注册登录部分
 
@@ -133,7 +139,7 @@
      ​
 
 
-## Part Two. 大学生 APIs (均需要采用Post请求方式)
+## Part Two. 大学生 APIs
 
 > 注册登录部分
 
