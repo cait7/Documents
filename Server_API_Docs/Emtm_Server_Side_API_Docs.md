@@ -28,7 +28,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
@@ -53,7 +53,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
@@ -91,7 +91,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
@@ -119,7 +119,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string,
+         "err_message" : string,
          // 当code为0时，task_status字段为空对象
          "task_status" : {
              // 存储所有已接受任务的学生昵称，与完成与否信息
@@ -163,7 +163,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
@@ -190,7 +190,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
@@ -218,7 +218,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
@@ -242,7 +242,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
@@ -266,7 +266,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
@@ -295,7 +295,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
@@ -324,7 +324,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
@@ -354,7 +354,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
@@ -379,7 +379,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string,
+         "err_message" : string,
          // 当code为0时，task_status字段为空对象
          "task_status" : {
              // 存储所有已接受任务的学生昵称，与完成与否信息
@@ -414,7 +414,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
@@ -441,7 +441,7 @@
       ```js
       {
           "code" : boolean, // 0 for failure, 1 for success
-          "errMessage" : string
+          "err_message" : string
       }
       ```
 
@@ -467,7 +467,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string,
+         "err_message" : string,
          "credit_score" : int
      }
      ```
@@ -495,7 +495,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
@@ -519,7 +519,7 @@
      ```js
      {
          "code" : boolean, // 0 for failure, 1 for success
-         "errMessage" : string
+         "err_message" : string
      }
      ```
 
