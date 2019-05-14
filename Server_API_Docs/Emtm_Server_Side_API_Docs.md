@@ -20,7 +20,7 @@
 
      ```js
      {
-         "username" : 奶牛用户昵称[string],
+         "userid" : 奶牛用户昵称[string],
          "wechat_ok" : 是否通过微信账号认证[boolean] // 0 for failure, 1 for success
          "logup_mode" : 0, // 奶牛用户注册模式与大学生须区分开
          "email" : 奶牛用户邮箱[string],
@@ -48,7 +48,7 @@
 
      ```js
      {
-         "username" : 奶牛用户昵称[string],
+         "userid" : 奶牛用户昵称[string],
          "login_mode" : 0, // 奶牛用户登录模式与大学生须区分开
          "wechat_ok" : 是否通过微信账号认证[boolean] // 0 for failure, 1 for success
      }
@@ -76,7 +76,7 @@
 
      ```js
      {
-         "username" : 奶牛用户昵称[string],
+         "userid" : 奶牛用户昵称[string],
          "release_mode" : 0, // 奶牛用户发布任务模式与大学生区分开
          "task_name" : 任务名称[string],
          "task_mode" : 发布任务类型[int],//系统目前提供三种：0.问卷调查，1.社团招新，2.文档翻译
@@ -114,7 +114,7 @@
 
      ```js
      {
-         "username" : 奶牛用户昵称[string],
+         "userid" : 奶牛用户昵称[string],
          "check_mode" : 0, // 奶牛查看任务模式，须与大学生查看任务区分开
          "task_name" : 目标任务的名称[string]
      }
@@ -151,7 +151,7 @@
 
      ```js
      {
-         "username" : 大学生用户昵称[string],
+         "userid" : 大学生用户昵称[string],
          "wechat_ok" : 是否通过微信账号认证[boolean] // 0 for failure, 1 for success
          "logup_mode" : 1, // 大学生用户注册模式与奶牛须区分开
          "email" : 大学生用户邮箱[string],
@@ -185,7 +185,7 @@
 
      ```js
      {
-         "username" : 大学生用户昵称[string],
+         "userid" : 大学生用户昵称[string],
          "login_mode" : 1, // 大学生用户登录模式与奶牛须区分开
          "wechat_ok" : 是否通过微信账号认证[boolean] // 0 for failure, 1 for success
      }
@@ -213,7 +213,7 @@
 
      ```js
      {
-         "username" : 创建群聊的大学生昵称，作为群主[string],
+         "userid" : 创建群聊的大学生昵称，作为群主[string],
          "group_name" : 群聊名称[string],
          "max_limit" : 群聊人数上限[int]
      }
@@ -238,7 +238,7 @@
 
      ```js
      {
-         "username" : 加入群聊的大学生昵称[string],
+         "userid" : 加入群聊的大学生昵称[string],
          "group_name" : 目标群聊的名称[string]
      }
      ```
@@ -289,9 +289,9 @@
 
      ```js
      {
-         "username" : 当前大学生用户昵称[string],
+         "userid" : 当前大学生用户昵称[string],
          "receive_mode" : 0, // 接收奶牛发布的任务，须与接收大学生私人任务区分
-         "target_username" : 发布任务的目标奶牛用户昵称[string],
+         "target_userid" : 发布任务的目标奶牛用户昵称[string],
          "target_task" : 目标任务名称[string]
      }
      ```
@@ -317,9 +317,9 @@
 
      ```js
      {
-         "username" : 当前大学生用户名称,
+         "userid" : 当前大学生用户名称,
          "submit_mode" : 0, // 提交奶牛发起的任务应与提交私人任务分开
-         "target_username" : 发布任务的目标用户昵称[string],
+         "target_userid" : 发布任务的目标用户昵称[string],
          "target_task" : 目标任务名称[string],
          // 目前还在考虑大学生用户以何种形式提交任务结果
      }
@@ -346,7 +346,7 @@
 
      ```js
      {
-         "username" : 奶牛用户昵称[string],
+         "userid" : 奶牛用户昵称[string],
          "release_mode" : 1, // 私人任务发布模式与奶牛任务区分开
          "task_name" : 任务名称[string],
          "task_content" : 私人任务要求[string],
@@ -374,7 +374,7 @@
 
      ```js
      {
-         "username" : 大学生用户昵称[string],
+         "userid" : 大学生用户昵称[string],
          "check_mode" : 1, // 大学生查看任务模式，须与奶牛查看任务区分开
          "task_name" : 目标任务的名称[string]
      }
@@ -408,9 +408,9 @@
 
      ```js
      {
-         "username" : 当前大学生用户昵称[string],
+         "userid" : 当前大学生用户昵称[string],
          "receive_mode" : 1, // 接收私人发布的任务，须与接受奶牛任务区分
-         "target_username" : 发布任务的目标大学生用户昵称[string],
+         "target_userid" : 发布任务的目标大学生用户昵称[string],
          "target_task" : 目标任务名称[string]
      }
      ```
@@ -434,9 +434,9 @@
 
       ```js
       {
-          "username" : 当前大学生用户名称,
+          "userid" : 当前大学生用户名称,
           "submit_mode" : 1, // 提交私人任务应与提交奶牛任务分开
-          "target_username" : 发布任务的目标用户昵称[string],
+          "target_userid" : 发布任务的目标用户昵称[string],
           "target_task" : 目标任务名称[string],
           // 目前还在考虑大学生用户以何种形式提交任务结果
       }
@@ -464,7 +464,7 @@
 
      ```js
      {
-         "username" : 当前大学生用户昵称[string]
+         "userid" : 当前大学生用户昵称[string]
      }
      ```
 
@@ -491,7 +491,7 @@
 
      ```js
      {
-         "username" : 当前大学生用户昵称[string],
+         "userid" : 当前大学生用户昵称[string],
          "recharge_amount" : 充值金额[int] // 以闲钱币作为充值单位
      }
      ```
@@ -515,7 +515,7 @@
 
      ```js
      {
-         "username" : 当前大学生用户昵称[string],
+         "userid" : 当前大学生用户昵称[string],
          "withdraw_amount" : 提现金额[int] // 以闲钱币作为提现单位
      }
      ```
