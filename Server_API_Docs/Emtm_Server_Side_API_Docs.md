@@ -14,16 +14,18 @@
 
 1. 奶牛注册功能
 
-   * 接口地址：服务器地址/logup
+   * 接口地址：服务器地址/cow_logup
 
    * 请求参数：
 
      ```js
      {
+     	 "username" : 奶牛用户昵称，可以考虑使用微信昵称[string],
          "userid" : 奶牛用户id[string],
          "wechat_ok" : 是否通过微信账号认证[boolean] // 0 for failure, 1 for success
-         "logup_mode" : 0, // 奶牛用户注册模式与大学生须区分开
          "email" : 奶牛用户邮箱[string],
+         "phone" : 奶牛用户手机号码[string],
+         "infos" : 奶牛组织的相关介绍信息[string],
          "organization" : 奶牛用户机构名称[string]
          // 目前还在思考如何验证奶牛用户身份
      }
@@ -145,22 +147,23 @@
 
 1. 大学生注册功能
 
-   * 接口地址：服务器地址/logup
+   * 接口地址：服务器地址/stu_logup
 
    * 请求参数：
 
      ```js
      {
+     	 "username" : 大学生用户昵称，可以考虑设置为微信昵称[string], 
          "userid" : 大学生用户id[string],
          "wechat_ok" : 是否通过微信账号认证[boolean] // 0 for failure, 1 for success
-         "logup_mode" : 1, // 大学生用户注册模式与奶牛须区分开
          "email" : 大学生用户邮箱[string],
          "phone" : 大学生用户手机号[string],
-         "hobbies" : [大学生兴趣爱好][array],
+         "infos" : 大学生兴趣爱好，自我介绍[string],
          // 下面是大学生身份认证所需信息
-         "school" : 大学生所在学校[string],
+         "school_name" : 大学生所在学校[string],
          "student_id" : 大学生学号[int],
-         "real_name" : 大学生真实姓名[string]
+         "major" : 大学生真实姓名[string],
+         "year" : 大学生在校就读年长[int]
      }
      ```
 
