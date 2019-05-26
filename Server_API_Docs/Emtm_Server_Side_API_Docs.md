@@ -22,7 +22,7 @@
      {
      	 "username" : 奶牛用户昵称，可以考虑使用微信昵称[string],
          "userid" : 奶牛用户id[string],
-         "wechat_ok" : 是否通过微信账号认证[boolean] // 0 for failure, 1 for success
+         "wechat_ok" : 是否通过微信账号认证[boolean] // false or true
          "email" : 奶牛用户邮箱[string],
          "phone" : 奶牛用户手机号码[string],
          "infos" : 奶牛组织的相关介绍信息[string],
@@ -35,7 +35,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
@@ -51,8 +51,8 @@
      ```js
      {
          "userid" : 奶牛用户id[string],
-         "login_mode" : 0, // 奶牛用户登录模式与大学生须区分开
-         "wechat_ok" : 是否通过微信账号认证[boolean] // 0 for failure, 1 for success
+         "login_mode" : false, // 奶牛用户登录模式与大学生须区分开
+         "wechat_ok" : 是否通过微信账号认证[boolean] // false or true
      }
      ```
 
@@ -60,7 +60,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
@@ -79,9 +79,9 @@
      ```js
      {
          "userid" : 奶牛用户id[string],
-         "release_mode" : 0, // 奶牛用户发布任务模式与大学生区分开
+         "release_mode" : false, // 奶牛用户发布任务模式与大学生区分开
          "task_name" : 任务名称[string],
-         "task_mode" : 发布任务类型[int],//系统目前提供三种：0.问卷调查，1.社团招新，2.文档翻译
+         "task_mode" : 发布任务类型[int],//系统目前提供三种：false.问卷调查，1.社团招新，2.文档翻译
          "task_request" : {
              // 所有奶牛用户需要的要求参数需要传入，不需要的参数请勿写入此object
              "grade" : 目标学生年级[int],
@@ -98,7 +98,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
@@ -117,7 +117,7 @@
      ```js
      {
          "userid" : 奶牛用户id[string],
-         "check_mode" : 0, // 奶牛查看任务模式，须与大学生查看任务区分开
+         "check_mode" : false, // 奶牛查看任务模式，须与大学生查看任务区分开
          "task_name" : 目标任务的名称[string]
      }
      ```
@@ -126,12 +126,12 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string,
-         // 当code为0时，task_status字段为空对象
+         // 当code为false时，task_status字段为空对象
          "task_status" : {
              // 存储所有已接受任务的学生id，与完成与否信息
-             "student_name_1" : boolean, // 0 for not finished, 1 for finished
+             "student_name_1" : boolean, // false for not finished, 1 for finished
              ...
          }[js-object]
          // 目前还在考虑如何支持奶牛查看大学生任务完成的结果
@@ -155,7 +155,7 @@
      {
      	 "username" : 大学生用户昵称，可以考虑设置为微信昵称[string], 
          "userid" : 大学生用户id[string],
-         "wechat_ok" : 是否通过微信账号认证[boolean] // 0 for failure, 1 for success
+         "wechat_ok" : 是否通过微信账号认证[boolean] // false or true
          "email" : 大学生用户邮箱[string],
          "phone" : 大学生用户手机号[string],
          "infos" : 大学生兴趣爱好，自我介绍[string],
@@ -171,7 +171,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
@@ -189,8 +189,8 @@
      ```js
      {
          "userid" : 大学生用户id[string],
-         "login_mode" : 1, // 大学生用户登录模式与奶牛须区分开
-         "wechat_ok" : 是否通过微信账号认证[boolean] // 0 for failure, 1 for success
+         "login_mode" : true, // 大学生用户登录模式与奶牛须区分开
+         "wechat_ok" : 是否通过微信账号认证[boolean] // false or true
      }
      ```
 
@@ -198,7 +198,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
@@ -226,7 +226,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
@@ -250,7 +250,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
@@ -274,7 +274,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
@@ -293,7 +293,7 @@
      ```js
      {
          "userid" : 当前大学生用户id[string],
-         "receive_mode" : 0, // 接收奶牛发布的任务，须与接收大学生私人任务区分
+         "receive_mode" : false, // 接收奶牛发布的任务，须与接收大学生私人任务区分
          "target_userid" : 发布任务的目标奶牛用户id[string],
          "target_task" : 目标任务名称[string]
      }
@@ -303,7 +303,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
@@ -321,7 +321,7 @@
      ```js
      {
          "userid" : 当前大学生用户名称,
-         "submit_mode" : 0, // 提交奶牛发起的任务应与提交私人任务分开
+         "submit_mode" : false, // 提交奶牛发起的任务应与提交私人任务分开
          "target_userid" : 发布任务的目标用户id[string],
          "target_task" : 目标任务名称[string],
          // 目前还在考虑大学生用户以何种形式提交任务结果
@@ -332,7 +332,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
@@ -350,7 +350,7 @@
      ```js
      {
          "userid" : 奶牛用户id[string],
-         "release_mode" : 1, // 私人任务发布模式与奶牛任务区分开
+         "release_mode" : true, // 私人任务发布模式与奶牛任务区分开
          "task_name" : 任务名称[string],
          "task_content" : 私人任务要求[string],
          "task_pay" : 任务薪酬[int],
@@ -362,7 +362,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
@@ -378,7 +378,7 @@
      ```js
      {
          "userid" : 大学生用户id[string],
-         "check_mode" : 1, // 大学生查看任务模式，须与奶牛查看任务区分开
+         "check_mode" : true, // 大学生查看任务模式，须与奶牛查看任务区分开
          "task_name" : 目标任务的名称[string]
      }
      ```
@@ -387,12 +387,12 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string,
-         // 当code为0时，task_status字段为空对象
+         // 当code为false时，task_status字段为空对象
          "task_status" : {
              // 存储所有已接受任务的学生id，与完成与否信息
-             "student_name_1" : boolean, // 0 for not finished, 1 for finished
+             "student_name_1" : boolean, // false for not finished, true for finished
              ...
          }[js-object]
      }
@@ -412,7 +412,7 @@
      ```js
      {
          "userid" : 当前大学生用户id[string],
-         "receive_mode" : 1, // 接收私人发布的任务，须与接受奶牛任务区分
+         "receive_mode" : true, // 接收私人发布的任务，须与接受奶牛任务区分
          "target_userid" : 发布任务的目标大学生用户id[string],
          "target_task" : 目标任务名称[string]
      }
@@ -422,7 +422,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
@@ -438,7 +438,7 @@
       ```js
       {
           "userid" : 当前大学生用户名称,
-          "submit_mode" : 1, // 提交私人任务应与提交奶牛任务分开
+          "submit_mode" : true, // 提交私人任务应与提交奶牛任务分开
           "target_userid" : 发布任务的目标用户id[string],
           "target_task" : 目标任务名称[string],
           // 目前还在考虑大学生用户以何种形式提交任务结果
@@ -449,7 +449,7 @@
 
       ```js
       {
-          "code" : boolean, // 0 for failure, 1 for success
+          "code" : boolean, // false or true
           "err_message" : string
       }
       ```
@@ -475,7 +475,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string,
          "credit_score" : int
      }
@@ -503,7 +503,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
@@ -527,7 +527,7 @@
 
      ```js
      {
-         "code" : boolean, // 0 for failure, 1 for success
+         "code" : boolean, // false or true
          "err_message" : string
      }
      ```
