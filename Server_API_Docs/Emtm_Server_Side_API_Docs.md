@@ -12,7 +12,7 @@
 
 > 注册登录部分
 
-1. 奶牛注册功能
+1. 奶牛认证信息功能
 
    * 接口地址：服务器地址/cow_logup
 
@@ -42,7 +42,7 @@
 
      ​
 
-2. 奶牛登录功能
+2. 登录功能(公用功能，在用户使用微信账号登录小程序之后调用查看是否注册)
 
    * 接口地址：服务器地址/login
 
@@ -51,7 +51,6 @@
      ```js
      {
          "userid" : 奶牛用户id[string],
-         "login_mode" : false, // 奶牛用户登录模式与大学生须区分开
          "wechat_ok" : 是否通过微信账号认证[boolean] // false or true
      }
      ```
@@ -81,14 +80,18 @@
          "userid" : 奶牛用户id[string],
          "release_mode" : false, // 奶牛用户发布任务模式与大学生区分开
          "task_name" : 任务名称[string],
-         "task_mode" : 发布任务类型[int],//系统目前提供三种：false.问卷调查，1.社团招新，2.文档翻译
+         "task_intro" : 任务介绍[string],
+         "task_mode" : 发布任务类型[int],//系统目前提供三种：0.问卷调查，1.文档翻译，2.帮忙取件
          "task_request" : {
-             // 所有奶牛用户需要的要求参数需要传入，不需要的参数请勿写入此object
+             // 该json参数是奶牛用户发布任务时专用，需要完善任务要求内容
+             // 学生用户发布时，同样需要将本参数的每一项完善，由于Rust静态读取的特性，可以填入缺省值
              "grade" : 目标学生年级[int],
              "major" : 目标学生专业[string],
-             "task_experience" : 目标学生任务经验下限[int], // 此处以学生历史完成的任务数来衡量
-             "credit_score" : 目标学生的信誉积分下限[int]
-         }[js-object],
+             "task_expe" : 目标学生任务经验下限[int], // 此处以学生历史完成的任务数来衡量
+             "credit_score" : 目标学生的信誉积分下限[int],
+             "max_participants": 最大参加人数[int]
+         }[json-object],
+         "task_risk" : 任务未完成扣除积分数[int],
          "task_pay" : 任务薪酬[int],
          "task_time_limit" : 任务最终deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string]
      }
@@ -128,12 +131,17 @@
      {
          "code" : boolean, // false or true
          "err_message" : string,
+         "task_state" : string, // 任务状态，进行中或者已结束
          // 当code为false时，task_status字段为空对象
-         "task_status" : {
+         "task_status" : [
              // 存储所有已接受任务的学生id，与完成与否信息
-             "student_name_1" : boolean, // false for not finished, 1 for finished
+             {
+                 "student_userid" : string, // 参与活动的学生微信ID
+                 "is_finish" : boolean, // false for not finished, 1 for finished
+             }
+             
              ...
-         }[js-object]
+         ]
          // 目前还在考虑如何支持奶牛查看大学生任务完成的结果
      }
      ```
@@ -145,7 +153,7 @@
 
 > 注册登录部分
 
-1. 大学生注册功能
+1. 大学生信息认证功能
 
    * 接口地址：服务器地址/stu_logup
 
@@ -180,7 +188,7 @@
 
    ​
 
-2. 大学生登录功能
+2. 登录功能(公用功能)
 
    * 接口地址：服务器地址/login
 
@@ -188,8 +196,7 @@
 
      ```js
      {
-         "userid" : 大学生用户id[string],
-         "login_mode" : true, // 大学生用户登录模式与奶牛须区分开
+         "userid" : 用户id[string],
          "wechat_ok" : 是否通过微信账号认证[boolean] // false or true
      }
      ```
@@ -199,6 +206,7 @@
      ```js
      {
          "code" : boolean, // false or true
+         "type" : int, // -1 for not registered, 0 for cow registered, 1 for student
          "err_message" : string
      }
      ```
@@ -533,3 +541,76 @@
      ```
 
      ​
+
+## Part Three. 公用APIs
+
+> 获取用户自身的微信id
+
+1. 用户微信ID获取功能
+
+	* 接口地址：服务器地址/get_wechatid
+
+	* 请求参数：
+
+	```js
+	{
+		"appid": 小程序appid[string],
+		"secret": 小程序appsecret[string], 
+		"code": 前端登录时获取的code[string]
+	}
+	```
+
+	* 返回格式：
+
+	```js
+	{
+		"openid": 用户的微信id[string],
+		"errcode": 错误码[int],
+		"errmsg": 错误信息[string]
+	}
+	```
+
+
+> 任务展示与搜索部分
+
+1. 任务搜索功能
+
+   * 接口地址：服务器地址/search_mission
+
+   * 请求参数：
+
+     ```js
+     {
+         "keyword" : 搜索框内输入的关键词[string]
+     }
+     ```
+
+   * 返回格式：
+
+     ```js
+     {
+         "code" : boolean, // false or true
+         "err_message" : string,
+         "search_result" : [
+             {
+                 "mid" : 任务数据库id[int], "name" : 任务名称[string], 
+                 "content" : 任务描述[string], "poster_userid" : 发布任务者的微信id[string],
+                 "time_limit" : 任务截止时间[string],
+                 "score" : 搜索关键词与该任务关联分数，分数越高关联度越高，前端按score顺序展示[float]
+             }
+             ...
+             ...
+         ]
+     }
+     ```
+
+     ​
+
+
+
+> 个人信息部分
+
+
+
+
+
