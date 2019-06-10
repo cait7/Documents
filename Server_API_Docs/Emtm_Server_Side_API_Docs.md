@@ -22,12 +22,11 @@
      {
      	 "username" : 奶牛用户昵称，可以考虑使用微信昵称[string],
          "userid" : 奶牛用户id[string],
-         "wechat_ok" : 是否通过微信账号认证[boolean] // false or true
+         "wechat_ok" : 是否通过认证[boolean] // 使用verify接口认证，false or true
          "email" : 奶牛用户邮箱[string],
          "phone" : 奶牛用户手机号码[string],
          "infos" : 奶牛组织的相关介绍信息[string],
          "organization" : 奶牛用户机构名称[string]
-         // 目前还在思考如何验证奶牛用户身份
      }
      ```
 
@@ -69,7 +68,7 @@
 
 > 发布任务部分
 
-1. 奶牛发布任务功能
+1. 奶牛发布任务功能 - 第一步(完成任务通用参数传递)
 
    * 接口地址：服务器地址/release_task
 
@@ -81,12 +80,13 @@
          "release_mode" : false, // 奶牛用户发布任务模式与大学生区分开
          "task_name" : 任务名称[string],
          "task_intro" : 任务介绍[string],
-         "task_mode" : 发布任务类型[int],//系统目前提供三种：0.问卷调查，1.文档翻译，2.帮忙取件
+         "task_mode" : 发布任务类型[int],//系统目前提供三种：0.问卷调查，1.闲置交易，2.帮忙取件
          "task_request" : {
              // 该json参数是奶牛用户发布任务时专用，需要完善任务要求内容
-             // 学生用户发布时，同样需要将本参数的每一项完善，由于Rust静态读取的特性，可以填入缺省值
-             "grade" : 目标学生年级[int],
-             "major" : 目标学生专业[string],
+             // 学生用户发布时，同样需要将本参数的每一项完善，由于Rust静态读取的特性，必须填入缺省值
+             "min_grade" : 目标学生最低年级[int],
+             "max_grade" : 目标学生最高年级[int],
+             "major" : 目标学生专业[string], // 置空则为不限制
              "task_expe" : 目标学生任务经验下限[int], // 此处以学生历史完成的任务数来衡量
              "credit_score" : 目标学生的信誉积分下限[int],
              "max_participants": 最大参加人数[int]
@@ -102,11 +102,69 @@
      ```js
      {
          "code" : boolean, // false or true
-         "err_message" : string
+         "err_message" : string,
+         "mid" : int // 新建任务的ID
      }
      ```
+执行完第一步之后，必须根据不同的任务种类，前端选择不同的接口进行调用，完成详细任务的参数补充
 
-     ​
+2. 奶牛发布任务 - 第二步(针对不同种类的任务进行信息填充)
+
+	* 问卷调查 - 接口地址：服务器地址/release_task_question
+
+	* 请求参数：
+
+	```js
+	{
+		"mid": 上一步新建的任务ID[int],
+		// 问卷中所有的问题按照序号排序，存储到问题数组中，每个问题为一个json对象，严格按照以下结构存储
+		"questions":[
+			{
+				"order": 当前题目序号[int],
+				"type": 题目类型[bool], // 选择题为true, 填空题为false
+				"content": 题目内容[string],
+				"choice": 题目提供的选项[array] // 填空题不需要选项，置为空数组即可，选择题需要将选项按顺序放置
+			}[json-object],
+			...
+		][array]
+	}
+	```
+
+	* 闲置交易 - 接口地址：服务器地址/release_task_transaction
+
+	* 请求参数：
+
+	```js
+	{
+		"mid": 上一步新建的任务ID[int],
+		"type": 交易商品类型[string],
+		"info": 交易商品信息描述[string],
+		"loss": 交易商品的损耗情况[int] // 0~5作为损耗范围，其中0为无损耗，5为完全损耗
+	}
+	```
+
+	* 取寄快递 - 接口地址：服务器地址/release_task_express
+
+	* 请求参数：
+
+	```js
+	{
+		"mid": 上一步新建的任务ID[int],
+		"address": 取寄快递地址[string],
+		"phone_number": 发布任务者的电话号码[string],
+		"pick_number": 快递号[string],
+		"info": 快递的其余信息[string]
+	}
+	```
+
+	* 通用 - 返回格式：
+
+	```js
+	{
+		"code" : boolean, // false or true
+        "err_message" : string
+	}
+	```
 
 
 > 查看任务部分
@@ -163,7 +221,7 @@
      {
      	 "username" : 大学生用户昵称，可以考虑设置为微信昵称[string], 
          "userid" : 大学生用户id[string],
-         "wechat_ok" : 是否通过微信账号认证[boolean] // false or true
+         "wechat_ok" : 是否通过认证[boolean] // 使用verify接口认证，false or true
          "email" : 大学生用户邮箱[string],
          "phone" : 大学生用户手机号[string],
          "infos" : 大学生兴趣爱好，自我介绍[string],
@@ -567,6 +625,32 @@
 		"openid": 用户的微信id[string],
 		"errcode": 错误码[int],
 		"errmsg": 错误信息[string]
+	}
+	```
+
+> 奶牛用户和学生用户认证功能
+
+1. 用户认证功能
+
+	* 接口地址：服务器地址/user_verify
+
+	* 请求参数：
+
+	```js
+	{
+		"image_data": 用户拍照上传的证件照片数据流[string], // 学生上传校园卡照片，奶牛上传名片
+		"verify_mode": 认证模式[boolean], // 认证模式，false为奶牛认证，true为学生认证
+		"user_id": 用户证件上的ID信息[string], // 学生认证时上传学号，奶牛认证时上传真实名字
+		"organization": 用户所属组织名称[string] // 学生认证时上传学校名称，奶牛认证时上传组织机构名称
+	}
+	```
+
+	* 返回格式：
+
+	```js
+	{
+		"code": boolean,
+		"err_message": string
 	}
 	```
 
