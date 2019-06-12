@@ -599,11 +599,26 @@
 	```js
 	{
 		"image_data": 用户拍照上传的证件照片数据流[string], // 学生上传校园卡照片，奶牛上传名片
-		"verify_mode": 认证模式[boolean], // 认证模式，false为奶牛认证，true为学生认证
-		"user_id": 用户证件上的ID信息[string], // 学生认证时上传学号，奶牛认证时上传真实名字
-		"organization": 用户所属组织名称[string] // 学生认证时上传学校名称，奶牛认证时上传组织机构名称
+        "verify_info": {
+            "verify_mode": 认证模式[boolean], // 认证模式，false为奶牛认证，true为学生认证
+            "user_id": 用户证件上的ID信息[string], // 学生认证时上传学号，奶牛认证时上传真实名字
+            "organization": 用户所属组织名称[string] // 学生认证时上传学校名称，奶牛认证时上传组织机构名称
+        }
 	}
 	```
+
+    * 必须以`FormData`的形式传输参数，而不是以json格式传输，其中的对应关系为
+
+    ```js
+    Content-Disposition: form-data; name="image_data"
+
+    [图片的二进制流串]
+
+    --__X_PAW_BOUNDART__[分割符]
+    Content-Disposition: form-data; name="verify_info"
+
+    [包含相应信息的json字符串]
+    ```
 
 	* 返回格式：
 
