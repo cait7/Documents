@@ -38,172 +38,6 @@
          "err_message" : string
      }
      ```
-
-     ​
-
-2. 登录功能(公用功能，在用户使用微信账号登录小程序之后调用查看是否注册)
-
-   * 接口地址：服务器地址/login
-
-   * 请求参数：
-
-     ```js
-     {
-         "userid" : 奶牛用户id[string],
-         "wechat_ok" : 是否通过微信账号认证[boolean] // false or true
-     }
-     ```
-
-   * 返回格式：
-
-     ```js
-     {
-         "code" : boolean, // false or true
-         "err_message" : string
-     }
-     ```
-
-     ​
-
-
-> 发布任务部分
-
-1. 奶牛发布任务功能 - 第一步(完成任务通用参数传递)
-
-   * 接口地址：服务器地址/release_task
-
-   * 请求参数：
-
-     ```js
-     {
-         "userid" : 奶牛用户id[string],
-         "release_mode" : false, // 奶牛用户发布任务模式与大学生区分开
-         "task_name" : 任务名称[string],
-         "task_intro" : 任务介绍[string],
-         "task_mode" : 发布任务类型[int],//系统目前提供三种：0.问卷调查，1.闲置交易，2.帮忙取件
-         "task_request" : {
-             // 该json参数是奶牛用户发布任务时专用，需要完善任务要求内容
-             // 学生用户发布时，同样需要将本参数的每一项完善，由于Rust静态读取的特性，必须填入缺省值
-             "min_grade" : 目标学生最低年级[int],
-             "max_grade" : 目标学生最高年级[int],
-             "major" : 目标学生专业[string], // 置空则为不限制
-             "task_expe" : 目标学生任务经验下限[int], // 此处以学生历史完成的任务数来衡量
-             "credit_score" : 目标学生的信誉积分下限[int],
-             "max_participants": 最大参加人数[int]
-         }[json-object],
-         "task_risk" : 任务未完成扣除积分数[int],
-         "task_pay" : 任务薪酬[int],
-         "task_time_limit" : 任务最终deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string]
-     }
-     ```
-
-   * 返回格式：
-
-     ```js
-     {
-         "code" : boolean, // false or true
-         "err_message" : string,
-         "mid" : int // 新建任务的ID
-     }
-     ```
-执行完第一步之后，必须根据不同的任务种类，前端选择不同的接口进行调用，完成详细任务的参数补充
-
-2. 奶牛发布任务 - 第二步(针对不同种类的任务进行信息填充)
-
-	* 问卷调查 - 接口地址：服务器地址/release_task_question
-
-	* 请求参数：
-
-	```js
-	{
-		"mid": 上一步新建的任务ID[int],
-		// 问卷中所有的问题按照序号排序，存储到问题数组中，每个问题为一个json对象，严格按照以下结构存储
-		"questions":[
-			{
-				"order": 当前题目序号[int],
-				"type": 题目类型[bool], // 选择题为true, 填空题为false
-				"content": 题目内容[string],
-				"choice": 题目提供的选项[array] // 填空题不需要选项，置为空数组即可，选择题需要将选项按顺序放置
-			}[json-object],
-			...
-		][array]
-	}
-	```
-
-	* 闲置交易 - 接口地址：服务器地址/release_task_transaction
-
-	* 请求参数：
-
-	```js
-	{
-		"mid": 上一步新建的任务ID[int],
-		"type": 交易商品类型[string],
-		"info": 交易商品信息描述[string],
-		"loss": 交易商品的损耗情况[int] // 0~5作为损耗范围，其中0为无损耗，5为完全损耗
-	}
-	```
-
-	* 取寄快递 - 接口地址：服务器地址/release_task_express
-
-	* 请求参数：
-
-	```js
-	{
-		"mid": 上一步新建的任务ID[int],
-		"address": 取寄快递地址[string],
-		"phone_number": 发布任务者的电话号码[string],
-		"pick_number": 快递号[string],
-		"info": 快递的其余信息[string]
-	}
-	```
-
-	* 通用 - 返回格式：
-
-	```js
-	{
-		"code" : boolean, // false or true
-        "err_message" : string
-	}
-	```
-
-
-> 查看任务部分
-
-1. 奶牛查看任务功能
-
-   * 接口地址：服务器地址/check_task
-
-   * 请求参数：
-
-     ```js
-     {
-         "userid" : 奶牛用户id[string],
-         "check_mode" : false, // 奶牛查看任务模式，须与大学生查看任务区分开
-         "task_name" : 目标任务的名称[string]
-     }
-     ```
-
-   * 返回格式：
-
-     ```js
-     {
-         "code" : boolean, // false or true
-         "err_message" : string,
-         "task_state" : string, // 任务状态，进行中或者已结束
-         // 当code为false时，task_status字段为空对象
-         "task_status" : [
-             // 存储所有已接受任务的学生id，与完成与否信息
-             {
-                 "student_userid" : string, // 参与活动的学生微信ID
-                 "is_finish" : boolean, // false for not finished, 1 for finished
-             }
-             
-             ...
-         ]
-         // 目前还在考虑如何支持奶牛查看大学生任务完成的结果
-     }
-     ```
-
      ​
 
 
@@ -359,7 +193,6 @@
      ```js
      {
          "userid" : 当前大学生用户id[string],
-         "receive_mode" : false, // 接收奶牛发布的任务，须与接收大学生私人任务区分
          "target_userid" : 发布任务的目标奶牛用户id[string],
          "target_task" : 目标任务名称[string]
      }
@@ -387,7 +220,6 @@
      ```js
      {
          "userid" : 当前大学生用户名称,
-         "submit_mode" : false, // 提交奶牛发起的任务应与提交私人任务分开
          "target_userid" : 发布任务的目标用户id[string],
          "target_task" : 目标任务名称[string],
          // 目前还在考虑大学生用户以何种形式提交任务结果
@@ -407,35 +239,7 @@
 
 > 发布私人任务部分
 
-1. 发布私人任务功能
-
-   * 接口地址：服务器地址/release_task
-
-   * 请求参数：
-
-     ```js
-     {
-         "userid" : 奶牛用户id[string],
-         "release_mode" : true, // 私人任务发布模式与奶牛任务区分开
-         "task_name" : 任务名称[string],
-         "task_content" : 私人任务要求[string],
-         "task_pay" : 任务薪酬[int],
-         "task_time_limit" : 任务最终deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string]
-     }
-     ```
-
-   * 返回格式：
-
-     ```js
-     {
-         "code" : boolean, // false or true
-         "err_message" : string
-     }
-     ```
-
-     ​
-
-2. 查看自己发布的私人任务状态
+1. 查看自己发布的私人任务状态
 
    * 接口地址：服务器地址/check_task
 
@@ -444,7 +248,6 @@
      ```js
      {
          "userid" : 大学生用户id[string],
-         "check_mode" : true, // 大学生查看任务模式，须与奶牛查看任务区分开
          "task_name" : 目标任务的名称[string]
      }
      ```
@@ -478,7 +281,6 @@
      ```js
      {
          "userid" : 当前大学生用户id[string],
-         "receive_mode" : true, // 接收私人发布的任务，须与接受奶牛任务区分
          "target_userid" : 发布任务的目标大学生用户id[string],
          "target_task" : 目标任务名称[string]
      }
@@ -504,7 +306,6 @@
       ```js
       {
           "userid" : 当前大学生用户名称,
-          "submit_mode" : true, // 提交私人任务应与提交奶牛任务分开
           "target_userid" : 发布任务的目标用户id[string],
           "target_task" : 目标任务名称[string],
           // 目前还在考虑大学生用户以何种形式提交任务结果
@@ -602,6 +403,165 @@
 
 ## Part Three. 公用APIs
 
+1. 登录功能(公用功能，在用户使用微信账号登录小程序之后调用查看是否注册)
+
+   * 接口地址：服务器地址/login
+
+   * 请求参数：
+
+     ```js
+     {
+         "userid" : 用户id[string],
+         "wechat_ok" : 是否通过微信账号认证[boolean] // false or true
+     }
+     ```
+
+   * 返回格式：
+
+     ```js
+     {
+         "code" : boolean, // false or true
+         "err_message" : string
+     }
+     ```
+
+> 通用发布任务部分
+
+1. 发布任务功能 - 第一步(完成任务通用参数传递)
+
+   * 接口地址：服务器地址/release_task
+
+   * 请求参数：
+
+     ```js
+     {
+         "userid" : 奶牛用户id[string],
+         "release_mode" : false, // 奶牛用户发布任务模式与大学生区分开
+         "task_name" : 任务名称[string],
+         "task_intro" : 任务介绍[string],
+         "task_mode" : 发布任务类型[int],//系统目前提供三种：0.问卷调查，1.闲置交易，2.帮忙取件
+         "task_request" : {
+             // 该json参数是奶牛用户发布任务时专用，需要完善任务要求内容
+             "min_grade" : 目标学生最低年级[int] - Option, 
+             "max_grade" : 目标学生最高年级[int] - Option,
+             "major" : 目标学生专业[string] - Option,
+             "task_expe" : 目标学生任务经验下限[int] - Option, // 此处以学生历史完成的任务数来衡量
+             "credit_score" : 目标学生的信誉积分下限[int] - Option,
+             "max_participants": 最大参加人数[int] - 必须传输
+         }[json-object],
+         "task_risk" : 任务未完成扣除积分数[int],
+         "task_pay" : 任务薪酬[int],
+         "task_time_limit" : 任务最终deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string]
+     }
+     ```
+
+   * 返回格式：
+
+     ```js
+     {
+         "code" : boolean, // false or true
+         "err_message" : string,
+         "mid" : int // 新建任务的ID
+     }
+     ```
+执行完第一步之后，必须根据不同的任务种类，前端选择不同的接口进行调用，完成详细任务的参数补充
+
+2. 发布任务 - 第二步(针对不同种类的任务进行信息填充)
+
+    * 问卷调查 - 接口地址：服务器地址/release_task_question
+
+    * 请求参数：
+
+    ```js
+    {
+        "mid": 上一步新建的任务ID[int],
+        // 问卷中所有的问题按照序号排序，存储到问题数组中，每个问题为一个json对象，严格按照以下结构存储
+        "questions":[
+            {
+                "order": 当前题目序号[int],
+                "type": 题目类型[bool], // 选择题为true, 填空题为false
+                "content": 题目内容[string],
+                "choice": 题目提供的选项[array] // 填空题不需要选项，置为空数组即可，选择题需要将选项按顺序放置
+            }[json-object],
+            ...
+        ][array]
+    }
+    ```
+
+    * 闲置交易 - 接口地址：服务器地址/release_task_transaction
+
+    * 请求参数：
+
+    ```js
+    {
+        "mid": 上一步新建的任务ID[int],
+        "type": 交易商品类型[string],
+        "info": 交易商品信息描述[string],
+        "loss": 交易商品的损耗情况[int] // 0~5作为损耗范围，其中0为无损耗，5为完全损耗
+    }
+    ```
+
+    * 取寄快递 - 接口地址：服务器地址/release_task_express
+
+    * 请求参数：
+
+    ```js
+    {
+        "mid": 上一步新建的任务ID[int],
+        "address": 取寄快递地址[string],
+        "phone_number": 发布任务者的电话号码[string],
+        "pick_number": 快递号[string],
+        "info": 快递的其余信息[string]
+    }
+    ```
+
+    * 通用 - 返回格式：
+
+    ```js
+    {
+        "code" : boolean, // false or true
+        "err_message" : string
+    }
+    ```
+
+
+> 查看任务部分
+
+1. 查看任务功能
+
+   * 接口地址：服务器地址/check_task
+
+   * 请求参数：
+
+     ```js
+     {
+         "userid" : 用户id[string],
+         "task_name" : 目标任务的名称[string]
+     }
+     ```
+
+   * 返回格式：
+
+     ```js
+     {
+         "code" : boolean, // false or true
+         "err_message" : string,
+         "task_state" : string, // 任务状态，进行中或者已结束
+         // 当code为false时，task_status字段为空对象
+         "task_status" : [
+             // 存储所有已接受任务的学生id，与完成与否信息
+             {
+                 "student_userid" : string, // 参与活动的学生微信ID
+                 "is_finish" : boolean, // false for not finished, 1 for finished
+             }
+             
+             ...
+         ]
+         // 目前还在考虑如何支持奶牛查看大学生任务完成的结果
+     }
+     ```
+
+
 > 获取用户自身的微信id
 
 1. 用户微信ID获取功能
@@ -612,8 +572,8 @@
 
 	```js
 	{
-		"appid": 小程序appid[string],
-		"secret": 小程序appsecret[string], 
+        "appid": 小程序appid[string],
+        "secret": 小程序appsecret[string],
 		"code": 前端登录时获取的code[string]
 	}
 	```
@@ -634,7 +594,7 @@
 
 	* 接口地址：服务器地址/user_verify
 
-	* 请求参数：
+	* 请求参数：(注意！此处需要使用的请求参数格式为："Content-Type:multipart/form-data")
 
 	```js
 	{
@@ -687,8 +647,6 @@
          ]
      }
      ```
-
-     ​
 
 
 
