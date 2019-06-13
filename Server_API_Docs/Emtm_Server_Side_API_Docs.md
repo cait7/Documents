@@ -342,6 +342,7 @@
     ```
 
 
+
 > 获取用户自身的微信id
 
 1. 用户微信ID获取功能
@@ -772,8 +773,8 @@
      ```js
      {
          "userid" : 当前大学生用户id[string],
-         "target_userid" : 发布任务的目标奶牛用户id[string],
-         "target_task" : 目标任务名称[string]
+         "poster_id" : 发布任务的目标用户id[string],
+         "task_mid" : 目标任务id[string]
      }
      ```
 
@@ -787,29 +788,61 @@
      ```
 
 
-2. 提交任务功能
+1. 奶牛用户手动确认学生完成情况(适用于闲置交易、取寄快递任务)
 
-   * 接口地址：服务器地址/submit_task
+    * 接口地址：服务器地址/submit_task_cow
 
-   * 请求参数：
+    * 请求参数：
 
-     ```js
-     {
-         "userid" : 当前大学生用户名称,
-         "target_userid" : 发布任务的目标用户id[string],
-         "target_task" : 目标任务名称[string],
-         // 目前还在考虑大学生用户以何种形式提交任务结果
-     }
-     ```
+    ```js
+    {
+        "userid": 当前奶牛用户id[string],
+        "student_id": 待确认的学生用户id[string],
+        "task_mid": 对应的任务id[int]
+    }
+    ```
 
-   * 返回格式：
+    * 返回格式：
 
-     ```js
-     {
-         "code" : boolean, // false or true
+    ```js
+    {
+        "code" : boolean, // false or true
          "err_message" : string
-     }
-     ```
+    }
+    ```
+
+2. 学生用户提交任务信息(适用于问卷调查任务)
+
+    * 接口地址：服务器地址/submit_task_student
+
+    * 请求参数：
+
+    ```js
+    {
+        "userid": 当前学生用户id[string],
+        "poster_id": 任务发布者的id[string],
+        "task_mid": 对应的任务id[int],
+        "answers": [
+            {
+               "order": 问题序号[int],
+               // 若为填空题，则将答案放置在answer字段
+               "answer": 问题回答[string] - Option,
+               // 若为选择题，将答案放置在choices字段，格式为[0, 1, 2, ....]等等
+               "choices": 问题选项[array] - Option
+            }[json-object],
+            ...
+        ][array]
+    }
+    ```
+
+    * 返回格式：
+
+    ```js
+    {
+        "code" : boolean, // false or true
+        "err_message" : string
+    }
+    ```
 
 
 > 信誉积分部分
