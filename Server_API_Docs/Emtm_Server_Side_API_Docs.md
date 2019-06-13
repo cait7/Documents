@@ -26,7 +26,7 @@
      ```js
      {
          "code" : boolean, // false or true
-         "type" : int, // -1 for not registered, 0 for cow registered, 1 for student
+         "user_type" : int, // 0 for cow registered, 1 for student, 2 for unregisterd user
          "err_message" : string
      }
      ```
@@ -37,7 +37,7 @@
 
    * 接口地址：服务器地址/release_task
 
-   * 请求参数：
+   * 请求参数：(Option 字段可以不传输)
 
      ```js
      {
@@ -75,7 +75,7 @@
 
     * 问卷调查 - 接口地址：服务器地址/release_task_question
 
-    * 请求参数：
+    * 请求参数：(Option 字段可以不传输)
 
     ```js
     {
@@ -84,9 +84,9 @@
         "questions":[
             {
                 "order": 当前题目序号[int],
-                "type": 题目类型[bool], // 选择题为true, 填空题为false
+                "q_type": 题目类型[int], // 0 为填空题, 1 为单选题， 2 为多选题
                 "content": 题目内容[string],
-                "choice": 题目提供的选项[array] // 填空题不需要选项，置为空数组即可，选择题需要将选项按顺序放置
+                "choices": 题目提供的选项[array] - Option // 填空题不需要选项，选择题需要将选项按顺序放置
             }[json-object],
             ...
         ][array]
@@ -100,13 +100,14 @@
     ```js
     {
         "mid": 上一步新建的任务ID[int],
-        "type": 交易商品类型[string],
+        "t_type": 交易商品类型[string],
         "info": 交易商品信息描述[string],
         "loss": 交易商品的损耗情况[int] // 0~5作为损耗范围，其中0为无损耗，5为完全损耗
+        "address": 交易商品的地点
     }
     ```
 
-    * 取寄快递 - 接口地址：服务器地址/release_task_express
+    * 取寄快递 - 接口地址：服务器地址/release_task_errand
 
     * 请求参数：
 
@@ -132,12 +133,116 @@
 
 > 查看任务部分
 
-1. 查看自己接收的任务
+0. 查看当前系统的某一类型的所有任务
 
+    * 接口地址：服务器地址/get_tasks
+
+    * 请求参数：
+
+    ```js
+    {
+        "task_type": 任务类型[int] //系统目前提供三种：0.问卷调查，1.闲置交易，2.帮忙取件
+    }
+    ```
+
+    * 返回格式：
+
+    ```js
+    {
+        "code": boolean, // true or false
+        "err_message": string,
+        "tasks":[
+            {
+                "mid": 该任务的唯一id[int],
+                "poster_id": 任务发布者的唯一标识id[string],
+                "poster_name": 任务发布者的用户昵称[string],
+                "task_state" : 当前任务的状态[boolean], // true代表任务进行中，false代表任务已截止
+                 // 当前任务的所有详细信息字段
+                 "task_name" : 任务名称[string],
+                 "task_intro" : 任务介绍[string],
+                 "task_mode" : 发布任务类型[int],//系统目前提供三种：0.问卷调查，1.闲置交易，2.帮忙取件
+                 "task_pay" : 任务薪酬[int],
+                 "task_time_limit" : 任务最终deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string]
+            }[json-object],
+            ...
+        ][array]
+    }
+    ```
+
+
+1. 查看自己接收的任务(用于任务列表显示，返回的都是简述)
+
+	* 接口地址：服务器地址/check_task_self_receive
+
+	* 请求参数：
+
+	```js
+	{
+		"userid": 用户唯一标识id[string]
+	}
+	```
+
+	* 返回格式：
+
+	```js
+	{
+		"code": boolean, // false for failed, true for success
+		"err_message": string,
+		"receive_tasks":[
+			{
+				"mid": 该任务的唯一id[int],
+				"poster_id": 任务发布者的唯一标识id[string],
+				"poster_name": 任务发布者的用户昵称[string],
+				"task_state" : 当前任务的状态[boolean], // true代表任务进行中，false代表任务已截止
+				"user_finish_state" : 当前用户是否完成该任务[boolean], // true已完成，false未完成
+		         // 当前任务的所有详细信息字段
+		         "task_name" : 任务名称[string],
+		         "task_intro" : 任务介绍[string],
+		         "task_mode" : 发布任务类型[int],//系统目前提供三种：0.问卷调查，1.闲置交易，2.帮忙取件
+		         "task_pay" : 任务薪酬[int],
+         		 "task_time_limit" : 任务最终deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string]
+			}[json-object]
+			...
+		][array]
+	}
+	```
    
 
-2. 查看自己发布的任务
+2. 查看自己发布的任务(用于任务列表显示，返回的都是简述)
 
+	* 接口地址：服务器地址/check_task_self_release
+
+	* 请求参数：
+
+	```js
+	{
+		"userid": 用户唯一标识id[string]
+	}
+	```
+
+	* 返回格式：
+
+	```js
+	{
+		"code": boolean, // false for failed, true for success
+		"err_message": string,
+		"receive_tasks":[
+			{
+				"mid": 该任务的唯一id[int],
+				"poster_id": 任务发布者的唯一标识id[string],
+				"poster_name": 任务发布者的用户昵称[string],
+				"task_state" : 当前任务的状态[boolean], // true代表任务进行中，false代表任务已截止
+		         // 当前任务的所有详细信息字段
+		         "task_name" : 任务名称[string],
+		         "task_intro" : 任务介绍[string],
+		         "task_mode" : 发布任务类型[int],//系统目前提供三种：0.问卷调查，1.闲置交易，2.帮忙取件
+		         "task_pay" : 任务薪酬[int],
+         		 "task_time_limit" : 任务最终deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string]
+			}[json-object]
+			...
+		][array]
+	}
+	```
 
 
 
@@ -162,6 +267,8 @@
          "code" : boolean, // false or true
          "err_message" : string,
          "task_state" : boolean, // 任务状态，进行中为true, 或者已结束为false
+         // 0 代表用户是任务发布者, 1 代表用户是任务接受者并已经完成任务， 2 为用户暂未完成任务， 3 代表用户未接受任务
+         "task_user_state" : 用户对于任务的状态[int],
          // 当前任务的所有详细信息字段
          "poster_name" : 发布者的用户昵称[string],
          "task_name" : 任务名称[string],
@@ -180,21 +287,57 @@
          "task_pay" : 任务薪酬[int],
          "task_time_limit" : 任务最终deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string]
 
-         // 当code为false时，task_status字段为空对象
-         "task_status" : [
-             // 存储所有已接受任务的学生id，与完成与否信息
-             {
-                 "student_userid" : string, // 参与活动的学生微信ID
-                 "is_finish" : boolean, // false for not finished, 1 for finished
-             }
-             
-             ...
-         ]
-         // 目前还在考虑如何支持奶牛查看大学生任务完成的结果
+         // 以下是所有接受任务者的完成情况
+         // 已接收任务的用户列表
+         "accept_users": {
+            "accept_user_num": 已接收任务的用户总数[int],
+            "accept_user_names": 已接收任务的用户昵称数组[array] // 用户昵称[string]构成的数组
+            "accept_user_id": 已接收任务的用户id数组[array]
+         }[json-object],
+         //已完成任务的用户列表
+         "finish_users": {
+            "finish_user_num": 已完成任务的用户总数[int],
+            "finish_user_names": 已完成任务的用户昵称数组[array] // 用户昵称[string]构成的数组
+            "finish_user_id": 已完成任务的用户id数组[array]
+         }[json-object],
+         //此处闲置交易任务，取寄快递任务不需要额外的任务信息，但问卷调查需要，具体获取用户已填好的问卷内容
+         //，须根据不同参与者，调用额外的接口进行获取
      }
      ```
 
+4. 查看某一学生用户的问卷调查任务完成情况
 
+    * 接口地址：服务器地址/check_question_naire
+
+    * 请求参数：
+
+    ```js
+    {
+        "mid": 对应的问卷调查任务id[int],
+        "userid": 作为查看目标的大学生id[int],
+        "poster_id": 作为任务发起人的当前用户id[int] // 规定只有任务发起人才能看问卷调查结果
+    }
+    ```
+
+    * 返回格式：
+
+    ```js
+    {
+        "code": boolean, // ture for success, false for failed
+        "err_message": string,
+        "answers": [
+            {
+                "order": 问题序号[int],
+                "q_type": 问题类型[int], 0 为填空题, 1 为单选题， 2 为多选题
+                "content": 问题内容[string],
+                "answer": 问题填空题回答[string] - Option, 
+                "choices": 问题选择题回答[array] - Option,
+                // 选择题的答案形式为：[0, 1, ...]
+            }[json-object],
+            ...
+        ][array]
+    }
+    ```
 
 
 > 获取用户自身的微信id
@@ -284,11 +427,77 @@
      ```
 
 
+> 资金管理部分
 
-> 个人信息部分
+1. 充值功能
 
+   * 接口地址：服务器地址/recharge
 
+   * 请求参数：
 
+     ```js
+     {
+         "userid" : 当前大学生用户id[string],
+         "recharge_amount" : 充值金额[int] // 以闲钱币作为充值单位
+     }
+     ```
+
+   * 返回格式：
+
+     ```js
+     {
+         "code" : boolean, // false or true
+         "err_message" : string
+     }
+     ```
+
+     ​
+
+2. 提现功能
+
+   * 接口地址：服务器地址/withdraw
+
+   * 请求参数：
+
+     ```js
+     {
+         "userid" : 当前大学生用户id[string],
+         "withdraw_amount" : 提现金额[int] // 以闲钱币作为提现单位
+     }
+     ```
+
+   * 返回格式：
+
+     ```js
+     {
+         "code" : boolean, // false or true
+         "err_message" : string
+     }
+     ```
+
+3. 获取当前资金功能
+
+    * 接口地址：服务器地址/get_balance
+
+    * 请求参数：
+
+    ```js
+    {
+        "userid" : 当前大学生用户id[string]
+    }
+    ```
+
+    * 返回格式：
+
+    * 返回格式：
+
+     ```js
+     {
+         "code" : boolean, // false or true
+         "balance" : int, // 用户账户余额
+         "err_message" : string
+     }
+     ```
 
 ## Part One. 奶牛 APIs
 
@@ -321,6 +530,61 @@
      }
      ```
      ​
+
+> 个人信息部分
+
+1. 获取奶牛用户个人信息功能
+
+    * 接口地址：服务器地址/get_cow_info
+
+    * 请求参数：
+
+    ```js
+    {
+        "userid": 当前用户id[string]
+    }
+    ```
+
+
+    * 返回格式：
+
+    ```js
+    {
+        "code": boolean,
+        "err_message": string,
+
+        "username": 用户昵称[string],
+        "email": 用户邮箱[string],
+        "phone": 用户电话[string],
+        "infos": 用户个人介绍[string],
+        "organization": 用户组织[string]
+    }
+    ```
+
+
+2. 编辑奶牛用户个人信息功能(注意：组织认证完成不得更改用户组织的信息)
+
+    * 接口地址：服务器地址/edit_cow_info
+
+    * 请求参数：
+
+    ```js
+    {
+        "userid": 当前用户id[string],
+        "new_email": 新邮箱，[string]
+        "new_phone": 新电话，[string]
+        "new_infos": 新个人介绍[string]
+    }
+    ```
+
+    * 返回格式：
+
+    ```js
+    {
+        "code": boolean,
+        "err_message": string,
+    }
+    ```
 
 
 ## Part Two. 大学生 APIs
@@ -357,6 +621,66 @@
          "err_message" : string
      }
      ```
+
+> 个人信息部分
+
+1. 获取学生用户个人信息功能
+
+    * 接口地址：服务器地址/get_cow_info
+
+    * 请求参数：
+
+    ```js
+    {
+        "userid": 当前用户id[string]
+    }
+    ```
+
+
+    * 返回格式：
+
+    ```js
+    {
+        "code": boolean,
+        "err_message": string,
+
+        "username": 用户昵称[string],
+        "email": 用户邮箱[string],
+        "phone": 用户电话[string],
+        "infos": 用户个人介绍[string],
+        "school_name": 用户组织[string],
+        "student_id": 用户学生id[string],
+        "major": 用户专业[string],
+        "year": 用户年级[int]
+    }
+    ```
+
+
+2. 编辑学生用户个人信息功能(注意：学生认证完成不得更改学生认证信息)
+
+    * 接口地址：服务器地址/edit_cow_info
+
+    * 请求参数：
+
+    ```js
+    {
+        "userid": 当前用户id[string],
+        "new_email": 用户邮箱[string],
+        "new_phone": 用户电话[string],
+        "new_infos": 用户个人介绍[string],
+        "new_major": 用户专业[string],
+        "new_year": 用户年级[int]
+    }
+    ```
+
+    * 返回格式：
+
+    ```js
+    {
+        "code": boolean,
+        "err_message": string,
+    }
+    ```
 
 
 > 创建和加入群组部分
@@ -511,76 +835,3 @@
      ```
 
      ​
-
-
-> 资金管理部分
-
-1. 充值功能
-
-   * 接口地址：服务器地址/recharge
-
-   * 请求参数：
-
-     ```js
-     {
-         "userid" : 当前大学生用户id[string],
-         "recharge_amount" : 充值金额[int] // 以闲钱币作为充值单位
-     }
-     ```
-
-   * 返回格式：
-
-     ```js
-     {
-         "code" : boolean, // false or true
-         "err_message" : string
-     }
-     ```
-
-     ​
-
-2. 提现功能
-
-   * 接口地址：服务器地址/withdraw
-
-   * 请求参数：
-
-     ```js
-     {
-         "userid" : 当前大学生用户id[string],
-         "withdraw_amount" : 提现金额[int] // 以闲钱币作为提现单位
-     }
-     ```
-
-   * 返回格式：
-
-     ```js
-     {
-         "code" : boolean, // false or true
-         "err_message" : string
-     }
-     ```
-
-3. 获取当前资金功能
-
-	* 接口地址：服务器地址/get_balance
-
-	* 请求参数：
-
-	```js
-	{
-		"userid" : 当前大学生用户id[string]
-	}
-	```
-
-	* 返回格式：
-
-	* 返回格式：
-
-     ```js
-     {
-         "code" : boolean, // false or true
-         "balance" : int, // 用户账户余额
-         "err_message" : string
-     }
-     ```
