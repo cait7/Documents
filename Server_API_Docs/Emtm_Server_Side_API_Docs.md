@@ -266,6 +266,8 @@
      {
          "code" : boolean, // false or true
          "err_message" : string,
+         "mid": 任务id[int],
+         "poster_id": 任务发布者id[string],
          "task_state" : boolean, // 任务状态，进行中为true, 或者已结束为false
          // 0 代表用户是任务发布者, 1 代表用户是任务接受者并已经完成任务， 2 为用户暂未完成任务， 3 代表用户未接受任务
          "task_user_state" : 用户对于任务的状态[int],
@@ -313,7 +315,7 @@
 
     ```js
     {
-        "mid": 对应的问卷调查任务id[int],
+        "task_mid": 对应的问卷调查任务id[int],
         "userid": 作为查看目标的大学生id[int],
         "poster_id": 作为任务发起人的当前用户id[string] // 规定只有任务发起人才能看问卷调查结果
     }
