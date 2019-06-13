@@ -188,7 +188,7 @@
 	{
 		"code": boolean, // false for failed, true for success
 		"err_message": string,
-		"receive_tasks":[
+		"tasks":[
 			{
 				"mid": 该任务的唯一id[int],
 				"poster_id": 任务发布者的唯一标识id[string],
@@ -226,7 +226,7 @@
 	{
 		"code": boolean, // false for failed, true for success
 		"err_message": string,
-		"receive_tasks":[
+		"tasks":[
 			{
 				"mid": 该任务的唯一id[int],
 				"poster_id": 任务发布者的唯一标识id[string],
@@ -315,7 +315,7 @@
     {
         "mid": 对应的问卷调查任务id[int],
         "userid": 作为查看目标的大学生id[int],
-        "poster_id": 作为任务发起人的当前用户id[int] // 规定只有任务发起人才能看问卷调查结果
+        "poster_id": 作为任务发起人的当前用户id[string] // 规定只有任务发起人才能看问卷调查结果
     }
     ```
 
