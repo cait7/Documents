@@ -21,7 +21,7 @@
 			pub major: Option<String>,
 			pub task_expe: Option<i32>,
 			pub credit_score: Option<int>,
-			pub max_participants: Option<i32>
+			pub max_participants: i32
 		}
 
 		#[derive(Debug, Clone, Eq, PartialEq)]

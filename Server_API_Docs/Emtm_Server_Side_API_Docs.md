@@ -256,7 +256,7 @@
      {
          "userid" : 当前用户id[string],
          "poster_id" : 发布任务者id[string],
-         "task_mid" : 目标任务的id[string]
+         "task_mid" : 目标任务的id[int]
      }
      ```
 
@@ -774,7 +774,7 @@
      {
          "userid" : 当前大学生用户id[string],
          "poster_id" : 发布任务的目标用户id[string],
-         "task_mid" : 目标任务id[string]
+         "task_mid" : 目标任务id[int]
      }
      ```
 
