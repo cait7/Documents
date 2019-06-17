@@ -154,7 +154,7 @@
         "tasks":[
             {
                 "mid": 该任务的唯一id[int],
-                "poster_id": 任务发布者的唯一标识id[string],
+                "poster_id": 任务发布者的唯一标识id[int],
                 "poster_name": 任务发布者的用户昵称[string],
                 "task_state" : 当前任务的状态[boolean], // true代表任务进行中，false代表任务已截止
                  // 当前任务的所有详细信息字段
@@ -191,7 +191,7 @@
 		"tasks":[
 			{
 				"mid": 该任务的唯一id[int],
-				"poster_id": 任务发布者的唯一标识id[string],
+				"poster_id": 任务发布者的唯一标识id[int],
 				"poster_name": 任务发布者的用户昵称[string],
 				"task_state" : 当前任务的状态[boolean], // true代表任务进行中，false代表任务已截止
 				"user_finish_state" : 当前用户是否完成该任务[boolean], // true已完成，false未完成
@@ -229,7 +229,7 @@
 		"tasks":[
 			{
 				"mid": 该任务的唯一id[int],
-				"poster_id": 任务发布者的唯一标识id[string],
+				"poster_id": 任务发布者的唯一标识id[int],
 				"poster_name": 任务发布者的用户昵称[string],
 				"task_state" : 当前任务的状态[boolean], // true代表任务进行中，false代表任务已截止
 		         // 当前任务的所有详细信息字段
@@ -255,8 +255,8 @@
      ```js
      {
          "userid" : 当前用户id[string],
-         "poster_id" : 发布任务者id[string],
-         "task_mid" : 目标任务的id[int]
+         "poster_id" : 发布任务者数据库id[int],
+         "task_mid" : 目标任务的数据库id[int]
      }
      ```
 
@@ -267,7 +267,7 @@
          "code" : boolean, // false or true
          "err_message" : string,
          "mid": 任务id[int],
-         "poster_id": 任务发布者id[string],
+         "poster_id": 任务发布者id[int],
          "task_state" : boolean, // 任务状态，进行中为true, 或者已结束为false
          // 0 代表用户是任务发布者, 1 代表用户是任务接受者并已经完成任务， 2 为用户暂未完成任务， 3 代表用户未接受任务
          "task_user_state" : 用户对于任务的状态[int],
@@ -317,7 +317,7 @@
     {
         "task_mid": 对应的问卷调查任务id[int],
         "userid": 作为查看目标的大学生id[int],
-        "poster_id": 作为任务发起人的当前用户id[string] // 规定只有任务发起人才能看问卷调查结果
+        "poster_id": 作为任务发起人的当前用户数据库id[int] // 规定只有任务发起人才能看问卷调查结果
     }
     ```
 
@@ -773,7 +773,7 @@
      ```js
      {
          "userid" : 当前大学生用户id[string],
-         "poster_id" : 发布任务的目标用户id[string],
+         "poster_id" : 发布任务的目标用户id[int],
          "task_mid" : 目标任务id[int]
      }
      ```
@@ -820,7 +820,7 @@
     ```js
     {
         "userid": 当前学生用户id[string],
-        "poster_id": 任务发布者的id[string],
+        "poster_id": 任务发布者的id[int],
         "task_mid": 对应的任务id[int],
         "answers": [
             {
