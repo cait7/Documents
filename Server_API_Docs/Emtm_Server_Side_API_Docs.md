@@ -114,7 +114,8 @@
     ```js
     {
         "mid": 上一步新建的任务ID[int],
-        "address": 取寄快递地址[string],
+        "pickup_address": 取寄快递地址[string], (接收任务者拿取快递的地点)
+        "deliver_address": 发起任务者的所在地址[string], (接受任务者在拿取快递之后，须到该地址递交快递)
         "phone_number": 发布任务者的电话号码[string],
         "pick_number": 快递号[string],
         "info": 快递的其余信息[string]
@@ -302,8 +303,8 @@
             "finish_user_names": 已完成任务的用户昵称数组[array] // 用户昵称[string]构成的数组
             "finish_user_id": 已完成任务的用户id数组[array]
          }[json-object],
-         //此处闲置交易任务，取寄快递任务不需要额外的任务信息，但问卷调查需要，具体获取用户已填好的问卷内容
-         //，须根据不同参与者，调用额外的接口进行获取
+         // 问卷调查需要，具体获取用户已填好的问卷内容, 须根据不同参与者，调用额外的接口进行获取
+         // 闲置交易任务，取寄快递任务，只需要查看固定的额外任务需求即可
      }
      ```
 
@@ -316,8 +317,8 @@
     ```js
     {
         "task_mid": 对应的问卷调查任务id[int],
-        "userid": 作为查看目标的大学生id[int],
-        "poster_id": 作为任务发起人的当前用户数据库id[int] // 规定只有任务发起人才能看问卷调查结果
+        "userid": 当前查看的奶牛用户微信id[string], // 规定只有任务发起人才能看问卷调查结果
+        "student_id": 查看的目标学生的数据库id[int] 
     }
     ```
 
@@ -340,6 +341,63 @@
         ][array]
     }
     ```
+
+
+5. 查看闲置交易任务详情
+
+	* 接口地址：服务器地址/check_task_transaction
+
+	* 请求参数：
+
+	```js
+	{
+		"task_mid": 任务mid[int],
+		"userid": 作为查看目标的用户id[string],
+		"poster_id": 作为任务发起人的当前用户数据库id[int]
+	}
+	```
+
+	* 返回格式：
+
+	```js
+	{
+		"code": boolean,
+		"err_message": string,
+		"t_type": 交易商品类型[string],
+        "info": 交易商品信息描述[string],
+        "loss": 交易商品的损耗情况[int] // 0~5作为损耗范围，其中0为无损耗，5为完全损耗
+        "address": 交易商品的地点[string]
+	}
+	```
+
+
+6. 查看取寄快递任务详情
+
+	* 接口地址：服务器地址/check_task_errand
+
+	* 请求参数：
+
+	```js
+	{
+		"task_mid": 任务mid[int],
+		"userid": 作为查看目标的用户id[string],
+		"poster_id": 作为任务发起人的当前用户数据库id[int]
+	}
+	```
+
+	* 返回格式：
+
+	```js
+	{
+		"code": boolean,
+		"err_message": string,
+		"pickup_address": 取寄快递地址[string], (接收任务者拿取快递的地点)
+        "deliver_address": 发起任务者的所在地址[string], (接受任务者在拿取快递之后，须到该地址递交快递)
+        "phone_number": 发布任务者的电话号码[string],
+        "pick_number": 快递号[string],
+        "info": 快递的其余信息[string]
+	}
+	```
 
 
 
@@ -788,16 +846,16 @@
      ```
 
 
-1. 奶牛用户手动确认学生完成情况(适用于闲置交易、取寄快递任务)
+1. 奶牛, 大学生用户手动确认学生完成情况(适用于闲置交易、取寄快递任务)
 
-    * 接口地址：服务器地址/submit_task_cow
+    * 接口地址：服务器地址/submit_task
 
     * 请求参数：
 
     ```js
     {
-        "userid": 当前奶牛用户id[string],
-        "student_id": 待确认的学生用户id[string],
+        "userid": 当前奶牛用户id[string], //只有是当前任务发布者才可以确认完成
+        "student_id": 待确认的学生用户微信id[int],
         "task_mid": 对应的任务id[int]
     }
     ```
@@ -823,6 +881,7 @@
         "poster_id": 任务发布者的id[int],
         "task_mid": 对应的任务id[int],
         "answers": [
+        	// 此处前端必须按order进行数组内部成员的排序，即order与该条项的下标相同
             {
                "order": 问题序号[int],
                // 若为填空题，则将答案放置在answer字段
