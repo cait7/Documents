@@ -171,6 +171,46 @@
     ```
 
 
+0. 根据给定的mid范围，获取所有范围内的任务
+
+	* 接口地址：服务器地址/get_tasks_by_range
+
+	* 请求参数：
+
+	```js
+	{
+		"start": 任务范围的起始mid值[int]，
+		"offset": 需要获取的任务数量[int]
+	}
+	```
+
+	* 返回格式：
+
+	```js
+	{
+		"code": boolean, // false for failed, true for success
+		"err_message": string,
+		"tasks":[
+			{
+				"mid": 该任务的唯一id[int],
+				"poster_id": 任务发布者的唯一标识id[int],
+				"poster_name": 任务发布者的用户昵称[string],
+				"task_state" : 当前任务的状态[boolean], // true代表任务进行中，false代表任务已截止
+				"user_finish_state" : 当前用户是否完成该任务[boolean], // true已完成，false未完成
+		         // 当前任务的所有详细信息字段
+		         "task_name" : 任务名称[string],
+		         "task_intro" : 任务介绍[string],
+		         "task_mode" : 发布任务类型[int],//系统目前提供三种：0.问卷调查，1.闲置交易，2.帮忙取件
+		         "task_pay" : 任务薪酬[int],
+         		 "task_time_limit" : 任务最终deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string]
+			}[json-object]
+			...
+		][array]
+	}
+	```
+
+
+
 1. 查看自己接收的任务(用于任务列表显示，返回的都是简述)
 
 	* 接口地址：服务器地址/check_task_self_receive
