@@ -384,7 +384,7 @@
     {
         "code": boolean, // ture for success, false for failed
         "err_message": string,
-        "question": [
+        "questions": [
             {
                 "order": 当前题目序号[int],
                 "q_type": 题目类型[int], // 0 为填空题, 1 为单选题， 2 为多选题
