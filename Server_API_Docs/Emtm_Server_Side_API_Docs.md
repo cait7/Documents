@@ -362,9 +362,43 @@
      }
      ```
 
+4. 查看特定问卷调查任务的问卷内容
+
+    * 接口地址：服务器地址/task/question-naire
+
+    * 请求方式：GET
+
+    * 请求参数：
+
+    ```js
+    {
+        "task_mid": 对应的问卷调查任务id[int],
+        "userid": 当前用户微信id[string],
+        "poster_id": 该问卷调查任务的发起人id[int]
+    }
+    ```
+
+    * 返回格式：
+
+    ```js
+    {
+        "code": boolean, // ture for success, false for failed
+        "err_message": string,
+        "question": [
+            {
+                "order": 当前题目序号[int],
+                "q_type": 题目类型[int], // 0 为填空题, 1 为单选题， 2 为多选题
+                "content": 题目内容[string],
+                "choices": 题目提供的选项[array] - Option // 填空题没有选项，选择题的选项按顺序放置
+            }[json-object],
+            ...
+        ]
+    ```
+
+
 4. 查看某一学生用户的问卷调查任务完成情况
 
-    * 接口地址：服务器地址/question-naire
+    * 接口地址：服务器地址/task/question-naire-answer
 
     * 请求方式：GET
 
@@ -401,7 +435,7 @@
 
 5. 查看闲置交易任务详情
 
-	* 接口地址：服务器地址/transaction
+	* 接口地址：服务器地址/task/transaction
 
     * 请求方式：GET
 
@@ -431,7 +465,7 @@
 
 6. 查看取寄快递任务详情
 
-	* 接口地址：服务器地址/errand
+	* 接口地址：服务器地址/task/errand
 
     * 请求方式：GET
 
