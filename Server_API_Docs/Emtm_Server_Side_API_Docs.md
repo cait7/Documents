@@ -373,7 +373,7 @@
     ```js
     {
         "task_mid": 对应的问卷调查任务id[int],
-        "userid": 当前查看的奶牛用户微信id[string], // 规定只有任务发起人才能看问卷调查结果
+        "userid": 当前用户微信id[string], // 规定只有任务发起人才能看问卷调查的详细结果
         "student_id": 查看的目标学生的数据库id[int] 
     }
     ```
@@ -410,7 +410,7 @@
 	```js
 	{
 		"task_mid": 任务mid[int],
-		"userid": 作为查看目标的用户id[string],
+		"userid": 当前查看该任务的用户微信id[string],
 		"poster_id": 作为任务发起人的当前用户数据库id[int]
 	}
 	```
@@ -440,7 +440,7 @@
 	```js
 	{
 		"task_mid": 任务mid[int],
-		"userid": 作为查看目标的用户id[string],
+		"userid": 当前查看该任务的用户微信id[string],
 		"poster_id": 作为任务发起人的当前用户数据库id[int]
 	}
 	```
@@ -543,9 +543,16 @@
          "err_message" : string,
          "search_result" : [
              {
-                 "mid" : 任务数据库id[int], "name" : 任务名称[string], 
-                 "content" : 任务描述[string], "poster_userid" : 发布任务者的微信id[string],
-                 "time_limit" : 任务截止时间[string],
+                 "mid": 该任务的唯一id[int],
+				"poster_id": 任务发布者的唯一标识id[int],
+				"poster_name": 任务发布者的用户昵称[string],
+				"task_state" : 当前任务的状态[boolean], // true代表任务进行中，false代表任务已截止
+		         // 当前任务的所有详细信息字段
+		         "task_name" : 任务名称[string],
+		         "task_intro" : 任务介绍[string],
+		         "task_mode" : 发布任务类型[int],//系统目前提供三种：0.问卷调查，1.闲置交易，2.帮忙取件
+		         "task_pay" : 任务薪酬[int],
+         		 "task_time_limit" : 任务最终deadline时间戳，格式为：yyyy-mm-dd:hh-mm[string],
                  "score" : 搜索关键词与该任务关联分数，分数越高关联度越高，前端按score顺序展示[float]
              }
              ...
