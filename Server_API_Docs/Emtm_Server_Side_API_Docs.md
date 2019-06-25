@@ -164,7 +164,7 @@
                 "mid": 该任务的唯一id[int],
                 "poster_id": 任务发布者的唯一标识id[int],
                 "poster_name": 任务发布者的用户昵称[string],
-                "task_state" : 当前任务的状态[boolean], // true代表任务进行中，false代表任务已截止
+                "task_state" : 当前任务的状态[boolean], // true代表任务已截止，false代表任务进行中
                  // 当前任务的所有详细信息字段
                  "task_name" : 任务名称[string],
                  "task_intro" : 任务介绍[string],
@@ -203,7 +203,7 @@
 				"mid": 该任务的唯一id[int],
 				"poster_id": 任务发布者的唯一标识id[int],
 				"poster_name": 任务发布者的用户昵称[string],
-				"task_state" : 当前任务的状态[boolean], // true代表任务进行中，false代表任务已截止
+				"task_state" : 当前任务的状态[boolean], // true代表任务已截止，false代表任务进行中
 				"user_finish_state" : 当前用户是否完成该任务[boolean], // true已完成，false未完成
 		         // 当前任务的所有详细信息字段
 		         "task_name" : 任务名称[string],
@@ -244,7 +244,7 @@
 				"mid": 该任务的唯一id[int],
 				"poster_id": 任务发布者的唯一标识id[int],
 				"poster_name": 任务发布者的用户昵称[string],
-				"task_state" : 当前任务的状态[boolean], // true代表任务进行中，false代表任务已截止
+				"task_state" : 当前任务的状态[boolean], // true代表任务已截止，false代表任务进行中
 				"user_finish_state" : 当前用户是否完成该任务[boolean], // true已完成，false未完成
 		         // 当前任务的所有详细信息字段
 		         "task_name" : 任务名称[string],
@@ -284,7 +284,7 @@
 				"mid": 该任务的唯一id[int],
 				"poster_id": 任务发布者的唯一标识id[int],
 				"poster_name": 任务发布者的用户昵称[string],
-				"task_state" : 当前任务的状态[boolean], // true代表任务进行中，false代表任务已截止
+				"task_state" : 当前任务的状态[boolean], // true代表任务已截止，false代表任务进行中
 		         // 当前任务的所有详细信息字段
 		         "task_name" : 任务名称[string],
 		         "task_intro" : 任务介绍[string],
@@ -323,7 +323,7 @@
          "err_message" : string,
          "mid": 任务id[int],
          "poster_id": 任务发布者id[int],
-         "task_state" : boolean, // 任务状态，进行中为true, 或者已结束为false
+         "task_state" : boolean, // true代表任务已截止，false代表任务进行中
          // 0 代表用户是任务发布者, 1 代表用户是任务接受者并已经完成任务， 2 为用户暂未完成任务， 3 代表用户未接受任务
          "task_user_state" : 用户对于任务的状态[int],
          // 当前任务的所有详细信息字段
@@ -546,7 +546,7 @@
                  "mid": 该任务的唯一id[int],
 				"poster_id": 任务发布者的唯一标识id[int],
 				"poster_name": 任务发布者的用户昵称[string],
-				"task_state" : 当前任务的状态[boolean], // true代表任务进行中，false代表任务已截止
+				"task_state" : 当前任务的状态[boolean], // true代表任务已截止，false代表任务进行中
 		         // 当前任务的所有详细信息字段
 		         "task_name" : 任务名称[string],
 		         "task_intro" : 任务介绍[string],
