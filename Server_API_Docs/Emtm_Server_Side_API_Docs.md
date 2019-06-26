@@ -540,6 +540,7 @@
         "verify_mode": 认证模式[boolean], // 认证模式，false为奶牛认证，true为学生认证
         "user_id": 用户证件上的ID信息[string], // 学生认证时上传学号，奶牛认证时上传真实名字
         "organization": 用户所属组织名称[string] // 学生认证时上传学校名称，奶牛认证时上传组织机构名称
+        "wechat_id": 当前操作用户的微信openid[string]
 	}
 	```
 
@@ -736,7 +737,8 @@
         "email": 用户邮箱[string],
         "phone": 用户电话[string],
         "infos": 用户个人介绍[string],
-        "organization": 用户组织[string]
+        "verified": 是否已认证[bool],
+        "organization": 用户组织[string] - Option选项，如果已经认证则包含，否则为null
     }
     ```
 
@@ -833,10 +835,11 @@
         "email": 用户邮箱[string],
         "phone": 用户电话[string],
         "infos": 用户个人介绍[string],
-        "school_name": 用户组织[string],
-        "student_id": 用户学生id[string],
         "major": 用户专业[string],
-        "year": 用户年级[int]
+        "year": 用户年级[int],
+        "verified": 是否已经认证[bool],
+        "school_name": 用户组织[string], // Option - 如果没有认证则为null
+        "student_id": 用户学生id[string], // Option - 如果没有认证则为null
     }
     ```
 
