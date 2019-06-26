@@ -694,8 +694,7 @@
          "wechat_ok" : 是否通过认证[boolean] // 使用verify接口认证，false or true
          "email" : 奶牛用户邮箱[string],
          "phone" : 奶牛用户手机号码[string],
-         "infos" : 奶牛组织的相关介绍信息[string],
-         "organization" : 奶牛用户机构名称[string]
+         "infos" : 奶牛组织的相关介绍信息[string]
      }
      ```
 
@@ -790,10 +789,7 @@
          "email" : 大学生用户邮箱[string],
          "phone" : 大学生用户手机号[string],
          "infos" : 大学生兴趣爱好，自我介绍[string],
-         // 下面是大学生身份认证所需信息
-         "school_name" : 大学生所在学校[string],
-         "student_id" : 大学生学号[int],
-         "major" : 大学生真实姓名[string],
+         "major" : 大学生专业[string],
          "year" : 大学生在校就读年长[int]
      }
      ```
