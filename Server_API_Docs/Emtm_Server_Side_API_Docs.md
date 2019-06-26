@@ -836,6 +836,10 @@
         "verified": 是否已经认证[bool],
         "school_name": 用户组织[string], // Option - 如果没有认证则为null
         "student_id": 用户学生id[string], // Option - 如果没有认证则为null
+
+        "credit": 学生信用积分[int],
+        "accepted": 学生已接收任务数量[int],
+        "finished": 学生已完成任务数量[int]
     }
     ```
 
